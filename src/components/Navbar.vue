@@ -1,7 +1,7 @@
 <template>
   <nav>
     <v-app-bar color="red" dark app>
-      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
+      <!-- <v-app-bar-nav-icon><v-img src="/assets/logo.png"></v-img></v-app-bar-nav-icon> -->
       <v-toolbar-title class="text-uppercase">
         <span class="font-weight-light">Youtube</span>
         <span>ThumbNamil</span>
