@@ -4,7 +4,7 @@
       <!-- <v-app-bar-nav-icon><v-img src="/assets/logo.png"></v-img></v-app-bar-nav-icon> -->
       <v-toolbar-title class="text-uppercase">
         <span class="font-weight-light">Youtube</span>
-        <span>ThumbNamil</span>
+        <span>ThumbNail</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu offset-y class="hidden-lg-and-up">
