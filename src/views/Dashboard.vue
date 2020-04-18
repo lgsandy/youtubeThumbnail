@@ -35,11 +35,11 @@
           </v-card>
         </v-col>
       </v-row>
-       <!-- <div  style="height: calc(100% - 50px);
+        <div v-if="inValidUrl"  style="height: calc(100% - 50px);
       display: flex;place-content: center;align-items: center;font-size: 21px;color: gray;
        font-weight: bold;">
-       <span>No Search Result</span>
-      </div> -->
+       <span>Not Valid Url</span>
+      </div> 
         <v-overlay :value="overlay">
                 <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
               </v-overlay>
@@ -60,13 +60,22 @@ export default {
     videoId: "",
     downloadedImg:{},
      overlay: false,
+     inValidUrl:false
   }),
   methods: {
      search() {
       if (this.$refs.form.validate()) {
         this.allQualityThumb=[]; 
+        let isValid=this.validateYouTubeUrl(this.youtubeUrl);
+        if(isValid){
         this.overlay= true;
-          this.videoId = this.youtubeUrl.split("v=")[1];
+           this.inValidUrl=false;
+        let isValidUrl=this.youtubeUrl.includes("youtu.be");
+        if(isValidUrl){
+           this.videoId=this.youtubeUrl.split('/')[3]
+        }else{
+       this.videoId = this.youtubeUrl.split("v=")[1];
+        }
         let quality = [{name:"mqdefault",size:"MQ 320x180"},
                        {name:"hqdefault",size:"HQ 480x360"}, 
                        {name:"sddefault" ,size:"SD 640x480"}, 
@@ -74,7 +83,10 @@ export default {
         for(let i=0;i<quality.length;i++){
            this.forceDownload(i,quality);
         }
-      
+      }else{
+        this.inValidUrl=true;
+        console.log("Not Valid")
+      }
        }
     },
      forceDownload(i,quality){
@@ -98,6 +110,13 @@ export default {
     xhr.responseType = 'blob';
     xhr.send();
    },
+   validateYouTubeUrl(url){
+      var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+    if(url.match(p)){
+        return url.match(p)[1];
+    }
+    return false;
+},
   }
 };
 </script>
