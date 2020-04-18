@@ -9,11 +9,11 @@
               v-model="youtubeUrl"
               outlined
               prepend-icon="search"
-              label="Search"
+              label="SEARCH YOUTUBE VIDEO URL"
             ></v-text-field>
           </v-flex>
           <v-flex >
-            <v-btn large @click="search">search</v-btn>
+            <v-btn large @click="search" style="height:54px;box-shadow:0px 1px 1px 1px #ececec">search</v-btn>
           </v-flex>
         </v-layout>
       </v-form>
@@ -27,37 +27,33 @@
     >
     </v-img>
     <v-card-actions>
-      <a :href="thumb.url" :download="thumb.name">
-      <v-btn color="orange" text >Download
-      </v-btn>
+      <a :href="thumb.base64" :download="thumb.name" style=" text-decoration: none;">
+       <v-btn depressed>Download</v-btn>
       </a>
-    </v-card-actions>
-     <v-card-actions>
-      <v-btn color="orange" text>{{thumb.size}}
+       <v-btn color="orange" text>{{thumb.size}}
       </v-btn>
     </v-card-actions>
   </v-card>
-
-  
       </v-layout>
     </v-container>
   </div>
 </template>
 
 <script>
-// import axious from "axios";
+//  import axios from "axios";
 
 export default {
   name: "team",
   components: {},
   data: () => ({
-    searchVal: [v => !!v || "Work Order Number is required"],
+    searchVal: [v => !!v || "please paste youtube url"],
     allQualityThumb: [],
     youtubeUrl: "",
-    videoId: ""
+    videoId: "",
+    downloadedImg:{}
   }),
   methods: {
-    search() {
+     search() {
       if (this.$refs.form.validate()) {
         this.allQualityThumb=[];
           this.videoId = this.youtubeUrl.split("v=")[1];
@@ -66,12 +62,29 @@ export default {
                        {name:"sddefault" ,size:"SD 640x480"}, 
                         {name:"maxresdefault",size:"HD 1920x1080"}];
         for(let i=0;i<quality.length;i++){
-        let obj = { name: `image${i}`,size:quality[i].size,url: `http://i.ytimg.com/vi/${this.videoId}/${quality[i].name}.jpg`};
-         this.allQualityThumb.push(obj);
+           this.forceDownload(i,quality);
         }
-        console.log(this.allQualityThumb);
-      }
-    }
+       }
+    },
+     forceDownload(i,quality){
+    let _this=this;
+    let cUrl=`https://i.ytimg.com/vi/${this.videoId}/${quality[i].name}.jpg`  ;
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+           let base64=reader.result;
+          let obj = { name: `image${i}`,base64:base64,size:quality[i].size,url: cUrl};
+         _this.allQualityThumb.push(obj);  
+          console.log( _this.allQualityThumb); 
+        };
+        reader.readAsDataURL(xhr.response);
+    };
+    var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    xhr.open('GET',proxyUrl + cUrl);
+    xhr.responseType = 'blob';
+    xhr.send();
+   },
   }
 };
 </script>
