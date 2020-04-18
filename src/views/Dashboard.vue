@@ -33,8 +33,12 @@
        <v-btn color="orange" text>{{thumb.size}}
       </v-btn>
     </v-card-actions>
+    
   </v-card>
       </v-layout>
+        <v-overlay :value="overlay">
+                <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
+              </v-overlay>
     </v-container>
   </div>
 </template>
@@ -50,12 +54,14 @@ export default {
     allQualityThumb: [],
     youtubeUrl: "",
     videoId: "",
-    downloadedImg:{}
+    downloadedImg:{},
+     overlay: false,
   }),
   methods: {
      search() {
       if (this.$refs.form.validate()) {
-        this.allQualityThumb=[];
+        this.allQualityThumb=[]; 
+        this.overlay= true;
           this.videoId = this.youtubeUrl.split("v=")[1];
         let quality = [{name:"mqdefault",size:"MQ 320x180"},
                        {name:"hqdefault",size:"HQ 480x360"}, 
@@ -64,6 +70,7 @@ export default {
         for(let i=0;i<quality.length;i++){
            this.forceDownload(i,quality);
         }
+         this.overlay= false;
        }
     },
      forceDownload(i,quality){
