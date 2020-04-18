@@ -1,46 +1,50 @@
 <template>
-  <div class="team">
-    <v-container>
-      <v-form ref="form">
-        <v-layout row wrap>
-          <v-flex>
+    <v-container style="height:100%">
+      <v-form ref="form" style="height:60px">
+    
+          <div style="width:100%;display: flex;place-content: center;">
+          <div style="float:left;width:50%;height:60px">
             <v-text-field
               :rules="searchVal"
               v-model="youtubeUrl"
               outlined
-              prepend-icon="search"
+              prepend-inner-icon="search"
               label="SEARCH YOUTUBE VIDEO URL"
             ></v-text-field>
-          </v-flex>
-          <v-flex >
+          </div>
+          <div >
             <v-btn large @click="search" style="height:54px;box-shadow:0px 1px 1px 1px #ececec">search</v-btn>
-          </v-flex>
-        </v-layout>
+          </div>
+          </div>
+  
       </v-form>
-      <v-layout row wrap justify-center>
-
-      <v-card class="mx-auto" max-width="400" v-for="thumb in allQualityThumb" :key="thumb.name" >
-    <v-img
-      class="white--text align-end"
-      height="200px"
-      :src="thumb.url"
-    >
-    </v-img>
-    <v-card-actions>
-      <a :href="thumb.base64" :download="thumb.name" style=" text-decoration: none;">
-       <v-btn depressed>Download</v-btn>
-      </a>
-       <v-btn color="orange" text>{{thumb.size}}
-      </v-btn>
-    </v-card-actions>
-    
-  </v-card>
-      </v-layout>
+        <v-row >
+        <v-col cols="12" sm="6" v-for="thumb in allQualityThumb" :key="thumb.name" class="pa-2">
+          <v-card class="mx-auto" elevation="5">
+            <v-img class="white--text align-end" height="200px" :src="thumb.url"></v-img>
+            <v-card-actions>
+              <a :href="thumb.base64" :download="thumb.name" style=" text-decoration: none;">
+                <v-btn color="error">
+                  Download
+                  <v-icon dark right>cloud_download</v-icon>
+                </v-btn>
+              </a>
+              <v-spacer />
+              <v-btn color="orange" rounded>{{thumb.size}}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+       <!-- <div  style="height: calc(100% - 50px);
+      display: flex;place-content: center;align-items: center;font-size: 21px;color: gray;
+       font-weight: bold;">
+       <span>No Search Result</span>
+      </div> -->
         <v-overlay :value="overlay">
                 <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
               </v-overlay>
     </v-container>
-  </div>
+
 </template>
 
 <script>
