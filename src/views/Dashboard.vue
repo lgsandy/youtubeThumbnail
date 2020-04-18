@@ -70,7 +70,7 @@ export default {
         for(let i=0;i<quality.length;i++){
            this.forceDownload(i,quality);
         }
-         this.overlay= false;
+      
        }
     },
      forceDownload(i,quality){
@@ -83,7 +83,9 @@ export default {
            let base64=reader.result;
           let obj = { name: `image${i}`,base64:base64,size:quality[i].size,url: cUrl};
          _this.allQualityThumb.push(obj);  
-          console.log( _this.allQualityThumb); 
+          if(_this.allQualityThumb.length == 4){
+               _this.overlay= false;
+          }
         };
         reader.readAsDataURL(xhr.response);
     };
