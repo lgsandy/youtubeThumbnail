@@ -1,18 +1,13 @@
 <template>
   <nav>
-    <v-app-bar color="red" dark app>
-      <!-- <v-app-bar-nav-icon><v-img src="/assets/logo.png"></v-img></v-app-bar-nav-icon> -->
-      <v-toolbar-title class="text-uppercase">
-        <span class="font-weight-light">Youtube</span>
-        <span>ThumbNail</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-menu offset-y class="hidden-lg-and-up">
+    <v-app-bar color="red" dark app dense>
+      <v-menu offset-y v-show="drawer">
         <template v-slot:activator="{ on }">
-          <v-btn text v-on="on">
+          <v-app-bar-nav-icon v-on="on" class="hidden-md-and-up"></v-app-bar-nav-icon>
+          <!-- <v-btn text v-on="on">
             <v-icon left>expand_more</v-icon>
             <span>Menu</span>
-          </v-btn>
+          </v-btn>-->
         </template>
         <v-list flat>
           <v-list-item
@@ -27,18 +22,29 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn text class="hidden-sm-and-down">
-        <span>Home</span>
-        <v-icon right>home</v-icon>
-      </v-btn>
-      <v-btn text class="hidden-sm-and-down">
-        <span>About Us</span>
-        <v-icon right>description</v-icon>
-      </v-btn>
-      <v-btn text class="hidden-sm-and-down">
-        <span>Contact Us</span>
-        <v-icon right>contact_mail</v-icon>
-      </v-btn>
+      <v-toolbar-title class="text-uppercase">
+        <span class="font-weight-light">Youtube</span>
+        <span>ThumbNail</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <router-link to="/" tag="span">
+        <v-btn text class="hidden-sm-and-down">
+          <span>Home</span>
+          <v-icon right>home</v-icon>
+        </v-btn>
+      </router-link>
+      <router-link to="/aboutus" tag="span">
+        <v-btn text class="hidden-sm-and-down">
+          <span>About Us</span>
+          <v-icon right>description</v-icon>
+        </v-btn>
+      </router-link>
+      <router-link to="/contactus" tag="span">
+        <v-btn text class="hidden-sm-and-down">
+          <span>Contact Us</span>
+          <v-icon right>contact_mail</v-icon>
+        </v-btn>
+      </router-link>
     </v-app-bar>
   </nav>
 </template>
