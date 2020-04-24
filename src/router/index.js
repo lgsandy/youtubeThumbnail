@@ -26,6 +26,11 @@ const routes = [
     name: "aboutus",
     component: AboutUs,
   },
+  {
+    path: "/*",
+    name: "dashboard",
+    component: Dashboard,
+  },
 ];
 
 const router = new VueRouter({
