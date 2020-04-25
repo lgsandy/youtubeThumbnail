@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import router from "../router/index";
-
+ import router from "../router/index";
+import { db } from "../fireBase/firebaseauth";
 export default {
   name: "Login",
 
@@ -60,7 +60,25 @@ export default {
   created() {},
   methods: {
     loginUser() {
-      router.push("/");
+     let ref = db.collection("youtubethumb").doc('admin')
+        ref.get().then(res => {
+          this.loading = false;
+          if (res && res.data()) {
+             let adminDetails=res.data();
+             if(adminDetails.userName === this.user.userName || adminDetails.mobileNo === this.user.userName){
+                if(adminDetails.password === this.user.password){
+                  delete adminDetails.password;
+                  localStorage.adminData=JSON.stringify(adminDetails);
+                    router.push("/");
+                }else{
+                    console.log("Password invalid"); 
+                }
+             }else{
+                 console.log("username invalid");
+             }
+          }
+        });
+   
     }
   }
 };

@@ -1,8 +1,5 @@
 <template>
-  <div class="team">
-    <h1 class="subheading grey--text">About Us</h1>
-    <v-container></v-container>
-  </div>
+<v-img src="../assets/aboutus.jpg" max-height="200"></v-img>
 </template>
 
 <script>
