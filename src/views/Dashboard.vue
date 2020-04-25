@@ -76,7 +76,7 @@
         </v-row>
       </v-col>
       <v-col cols="12" xs="12" sm="2" class="hidden-sm-and-down">
-        <v-img src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg"></v-img>
+        <v-img src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg" height="100%"></v-img>
       </v-col>
     </v-row>
     <v-row>
@@ -208,7 +208,7 @@ export default {
           }
         }
       };
-      var proxyUrl = "https://cors-anywhere.herokuapp.com/";
+      var proxyUrl = "https://youtubethumnnail.herokuapp.com/";
       xhr.open("GET", proxyUrl + cUrl);
       xhr.responseType = "blob";
       xhr.send();
