@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import ContactUs from "../views/ContactUs.vue";
 import AboutUs from "../views/AboutUs.vue";
-import loginPage from "../admin/loginpage.vue"
+import loginPage from "../admin/loginpage.vue";
 Vue.use(VueRouter);
 
 const routes = [

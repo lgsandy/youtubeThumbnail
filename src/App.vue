@@ -1,28 +1,34 @@
 <template>
   <v-app>
-  <Navbar/>
+    <div v-if="getRouteName!='Admin'">
+      <Navbar />
+    </div>
     <v-content class="ma-4">
       <router-view></router-view>
     </v-content>
-     <Footer/>
+    <div v-if="getRouteName!='Admin'">
+      <Footer />
+    </div>
   </v-app>
- 
 </template>
 
 <script>
-
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-   Navbar,
-   Footer
+    Navbar,
+    Footer
   },
-
+  computed: {
+    getRouteName() {
+      return this.$route.name;
+    }
+  },
   data: () => ({
     //
-  }),
+  })
 };
 </script>
