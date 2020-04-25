@@ -25,41 +25,55 @@
           width="468"
           src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg"
         ></v-img>
-    
       </v-col>
     </v-row>
 
-    <v-row   justify="center">
+    <v-row justify="center">
       <v-col cols="12" xs="12" sm="2" class="hidden-sm-and-down">
         <!-- <v-img
           src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg"
-        ></v-img> -->
-            <leftsideAds/>
+        ></v-img>-->
+        <leftsideAds />
       </v-col>
-      <v-col cols="12" xs="12" sm="8" align="center" justify="center">
-        <v-card
-          class="mx-auto ma-2"
-          elevation="5"
-          v-for="thumb in allQualityThumb"
-          :key="thumb.name"
-        >
-         <v-card-text>
-          <v-img @click="showThumbPreview(thumb)" class="white--text align-end" height="200px" :src="thumb.url" style="cursor: pointer;"></v-img>
-         </v-card-text>
-          <v-card-actions>
-            <a :href="thumb.base64" :download="thumb.name" style=" text-decoration: none;">
-              <v-btn color="error">
-                Download
-                <v-icon dark right>cloud_download</v-icon>
-              </v-btn>
-            </a>
-            <v-spacer />
-            <v-btn color="orange" rounded>{{thumb.size}}</v-btn>
-          </v-card-actions>
-          <v-card class="hidden-md-and-up">
-            <v-card-text>Ads</v-card-text>
-          </v-card>
-        </v-card>
+      <v-col cols="12" xs="12" sm="8">
+        <v-row>
+          <v-col
+            cols="12"
+            xs="12"
+            sm="12"
+            md="6"
+            lg="6"
+            align="center"
+            justify="center"
+            v-for="thumb in allQualityThumb"
+            :key="thumb.name"
+          >
+            <v-card class="mx-auto ma-2" elevation="5">
+              <v-card-text>
+                <v-img
+                  @click="showThumbPreview(thumb)"
+                  class="white--text align-end"
+                  height="200px"
+                  :src="thumb.url"
+                  style="cursor: pointer;"
+                ></v-img>
+              </v-card-text>
+              <v-card-actions>
+                <a :href="thumb.base64" :download="thumb.name" style=" text-decoration: none;">
+                  <v-btn color="error">
+                    Download
+                    <v-icon dark right>cloud_download</v-icon>
+                  </v-btn>
+                </a>
+                <v-spacer />
+                <v-btn color="orange" rounded>{{thumb.size}}</v-btn>
+              </v-card-actions>
+              <v-card class="hidden-md-and-up">
+                <v-card-text>Ads</v-card-text>
+              </v-card>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="12" xs="12" sm="2" class="hidden-sm-and-down">
         <v-img src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg"></v-img>
@@ -81,42 +95,42 @@
        font-weight: bold;"
     >
       <span>Not Valid Url</span>
-    </div> -->
+    </div>-->
     <v-overlay :value="overlay">
       <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
     </v-overlay>
-    <v-dialog v-model="isShowThumbPreview" width="500"  >
+    <v-dialog v-model="isShowThumbPreview" width="500">
       <div style="height:400px;width:100%">
-       <div style="height:50px">
-           <v-toolbar flat dark color="primary"> 
-            <v-spacer/>
+        <div style="height:50px">
+          <v-toolbar flat dark color="primary">
+            <v-spacer />
             <v-btn icon dark @click="isShowThumbPreview = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            </v-toolbar>
-       </div>
-       <div style="height:calc(100% - 50px);background-color:white;overflow:auto;    text-align: center;">
-         <img :src="currentSelectedThumb" ><img>
-       </div>
-         
+          </v-toolbar>
+        </div>
+        <div
+          style="height:calc(100% - 50px);background-color:white;overflow:auto;    text-align: center;"
+        >
+          <img :src="currentSelectedThumb" />
+          <img />
+        </div>
       </div>
     </v-dialog>
 
-     <v-snackbar v-model="showSnackbar" :timeout="2000"    >
+    <v-snackbar v-model="showSnackbar" :timeout="2000">
       <span>{{snackbarText}}</span>
-      <v-btn color="pink" text  @click="showSnackbar = false">
-        Close
-      </v-btn>
+      <v-btn color="pink" text @click="showSnackbar = false">Close</v-btn>
     </v-snackbar>
   </v-container>
 </template>
 
 <script>
 //  import axios from "axios";
-import leftsideAds from '../components/leftsideads';
+import leftsideAds from "../components/leftsideads";
 export default {
   name: "team",
-  components: {leftsideAds},
+  components: { leftsideAds },
   data: () => ({
     searchVal: [v => !!v || "please paste youtube url"],
     allQualityThumb: [],
@@ -125,10 +139,10 @@ export default {
     downloadedImg: {},
     overlay: false,
     inValidUrl: false,
-    isShowThumbPreview:false,
-    currentSelectedThumb:'',
-    showSnackbar:false,
-    snackbarText:''
+    isShowThumbPreview: false,
+    currentSelectedThumb: "",
+    showSnackbar: false,
+    snackbarText: ""
   }),
   methods: {
     search() {
@@ -144,8 +158,8 @@ export default {
           } else {
             this.videoId = this.youtubeUrl.split("v=")[1];
           }
-          if(this.videoId && this.videoId.length >11){
-           this.videoId=this.videoId.substr(0, 11);
+          if (this.videoId && this.videoId.length > 11) {
+            this.videoId = this.videoId.substr(0, 11);
           }
           let quality = [
             { name: "mqdefault", size: "MQ 320x180" },
@@ -158,8 +172,8 @@ export default {
           }
         } else {
           this.inValidUrl = true;
-          this.showSnackbar=true;
-          this.snackbarText='Please Keep Valid Link';
+          this.showSnackbar = true;
+          this.snackbarText = "Please Keep Valid Link";
           console.log("Not Valid");
         }
       }
@@ -169,30 +183,29 @@ export default {
       let cUrl = `https://i.ytimg.com/vi/${this.videoId}/${quality[i].name}.jpg`;
       var xhr = new XMLHttpRequest();
       xhr.onload = function() {
-         console.log(xhr);
-         if (xhr.readyState === 4) {  
-        if (xhr.status === 200) {  
-        var reader = new FileReader();
-        reader.onloadend = function() {
-          let base64 = reader.result;
-          let obj = {
-            name: `image${i}`,
-            base64: base64,
-            size: quality[i].size,
-            url: cUrl
-          };
-          _this.allQualityThumb.push(obj);
-          if (_this.allQualityThumb.length == 4) {
+        console.log(xhr);
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+              let base64 = reader.result;
+              let obj = {
+                name: `image${i}`,
+                base64: base64,
+                size: quality[i].size,
+                url: cUrl
+              };
+              _this.allQualityThumb.push(obj);
+              if (_this.allQualityThumb.length == 4) {
+                _this.overlay = false;
+              }
+            };
+            reader.readAsDataURL(xhr.response);
+          } else {
             _this.overlay = false;
+            _this.showSnackbar = true;
+            _this.snackbarText = quality[i].size + " Image Quality Not Found";
           }
-
-        };
-        reader.readAsDataURL(xhr.response);
-        }else{
-            _this.overlay = false;
-            _this.showSnackbar=true;
-            _this.snackbarText=quality[i].size+" Image Quality Not Found";
-        }
         }
       };
       var proxyUrl = "https://cors-anywhere.herokuapp.com/";
@@ -207,21 +220,21 @@ export default {
       }
       return false;
     },
-   async allowAutoEnter(){
+    async allowAutoEnter() {
       if (!navigator.clipboard) {
-       return
+        return;
       }
-  try {
-    const text = await navigator.clipboard.readText();
-    this.youtubeUrl=text;
-  } catch (err) {
-    console.error('Failed to copy!', err)
-  }
+      try {
+        const text = await navigator.clipboard.readText();
+        this.youtubeUrl = text;
+      } catch (err) {
+        console.error("Failed to copy!", err);
+      }
     },
-    showThumbPreview(thumb){
+    showThumbPreview(thumb) {
       console.log(thumb);
-      this.currentSelectedThumb=thumb.url;
-      this.isShowThumbPreview=true;
+      this.currentSelectedThumb = thumb.url;
+      this.isShowThumbPreview = true;
     }
   }
 };
