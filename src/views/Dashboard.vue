@@ -129,7 +129,7 @@
 //  import axios from "axios";
 import leftsideAds from "../components/leftsideads";
 export default {
-  name: "team",
+  name: "Dashboard",
   components: { leftsideAds },
   data: () => ({
     searchVal: [v => !!v || "please paste youtube url"],
