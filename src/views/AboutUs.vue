@@ -70,7 +70,6 @@ export default {
       this.aboutUsDialog=true;
     },
      loadAboutUsData() {
-      if (localStorage && localStorage.adminData && localStorage.adminData.length) {
         let ref = db.collection("youtubethumb").doc("aboutUs");
         ref.onSnapshot(res => {
           if (res && res.data()) {
@@ -81,7 +80,6 @@ export default {
            }
           }
         });
-      }
     },
     updateAboutUsData(){
       this.aboutUsDialog = false;

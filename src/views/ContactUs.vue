@@ -27,7 +27,7 @@
           </v-btn>
         </v-card-title>
 
-        <v-list rounded color="#26c6da" dark max-width="400">
+        <v-list disabled rounded color="#26c6da" dark max-width="400">
           <v-list-item-group>
             <v-list-item>
               <v-list-item-icon>
@@ -200,14 +200,12 @@ export default {
       }
     },
 loadContactUs(){
-if (localStorage && localStorage.adminData && localStorage.adminData.length) {
         let ref = db.collection("youtubethumb").doc("contactUs");
         ref.onSnapshot(res => {
           if (res && res.data()) {
             this.contactDetails=res.data();
           }
         });
-      }
 },
   }
 };

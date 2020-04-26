@@ -61,7 +61,7 @@
               <v-card-actions>
                  <v-btn color="orange" rounded>{{thumb.size}}</v-btn>
                    <v-spacer />
-                <a :href="thumb.base64" :download="thumb.name" style=" text-decoration: none;">
+                <a :href="thumb.base64" :download="thumb.name" style=" text-decoration: none;" v-if="thumb.base64 && thumb.base64.length">
                   <v-btn color="error">
                     Download
                     <v-icon dark right>cloud_download</v-icon>
@@ -154,7 +154,6 @@ export default {
   methods: {
     search() {
       if (this.$refs.form.validate()) {
-        this.allQualityThumb = [];
         let isValid = this.validateYouTubeUrl(this.youtubeUrl);
         if (isValid) {
           this.overlay = true;
@@ -165,17 +164,17 @@ export default {
           } else {
             this.videoId = this.youtubeUrl.split("v=")[1];
           }
-          if (this.videoId && this.videoId.length > 11) {
+          if (this.videoId && this.videoId.length > 11) { 
             this.videoId = this.videoId.substr(0, 11);
           }
-          let quality = [
-            { name: "mqdefault", size: "MQ 320x180" },
-            { name: "hqdefault", size: "HQ 480x360" },
-            { name: "sddefault", size: "SD 640x480" },
-            { name: "maxresdefault", size: "HD 1920x1080" }
+           this.allQualityThumb = [
+            { name: "mqdefault", base64:'', size: "MQ 320x180",url: `https://i.ytimg.com/vi/${this.videoId}/mqdefault.jpg` },
+            { name: "hqdefault",  base64:'',size: "HQ 480x360",url: `https://i.ytimg.com/vi/${this.videoId}/hqdefault.jpg` },
+            { name: "sddefault",  base64:'',size: "SD 640x480",url: `https://i.ytimg.com/vi/${this.videoId}/sddefault.jpg` },
+            { name: "maxresdefault",  base64:'',size: "HD 1920x1080",url: `https://i.ytimg.com/vi/${this.videoId}/maxresdefault.jpg` }
           ];
-          for (let i = 0; i < quality.length; i++) {
-            this.forceDownload(i, quality);
+          for (let i = 0; i < this.allQualityThumb.length; i++) {
+            this.forceDownload(i);
           }
         } else {
           this.inValidUrl = true;
@@ -185,33 +184,24 @@ export default {
         }
       }
     },
-    forceDownload(i, quality) {
+    forceDownload(i) {
       let _this = this;
-      let cUrl = `https://i.ytimg.com/vi/${this.videoId}/${quality[i].name}.jpg`;
+      let cUrl = `https://i.ytimg.com/vi/${this.videoId}/${_this.allQualityThumb[i].name}.jpg`;
       var xhr = new XMLHttpRequest();
       xhr.onload = function() {
-        console.log(xhr);
+       _this.overlay = false;
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             var reader = new FileReader();
             reader.onloadend = function() {
               let base64 = reader.result;
-              let obj = {
-                name: `image${i}`,
-                base64: base64,
-                size: quality[i].size,
-                url: cUrl
-              };
-              _this.allQualityThumb.push(obj);
-              if (_this.allQualityThumb.length == 4) {
-                _this.overlay = false;
-              }
+              _this.allQualityThumb[i].base64=base64;
             };
             reader.readAsDataURL(xhr.response);
           } else {
-            _this.overlay = false;
+             _this.allQualityThumb[i].base64='';
             _this.showSnackbar = true;
-            _this.snackbarText = quality[i].size + " Image Quality Not Found";
+            _this.snackbarText = _this.allQualityThumb[i].size + " Image Quality Not Found";
           }
         }
       };
