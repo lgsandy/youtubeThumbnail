@@ -59,17 +59,24 @@
                 ></v-img>
               </v-card-text>
               <v-card-actions>
+                 <v-btn color="orange" rounded>{{thumb.size}}</v-btn>
+                   <v-spacer />
                 <a :href="thumb.base64" :download="thumb.name" style=" text-decoration: none;">
                   <v-btn color="error">
                     Download
                     <v-icon dark right>cloud_download</v-icon>
                   </v-btn>
                 </a>
-                <v-spacer />
-                <v-btn color="orange" rounded>{{thumb.size}}</v-btn>
+              
+               
               </v-card-actions>
               <v-card class="hidden-md-and-up">
-                <v-card-text>Ads</v-card-text>
+                <!-- <v-card-text>Ads</v-card-text> -->
+                 <v-img
+          height="60"
+          width="468"
+          src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg"
+        ></v-img>
               </v-card>
             </v-card>
           </v-col>
@@ -221,14 +228,13 @@ export default {
       return false;
     },
     async allowAutoEnter() {
-      if (!navigator.clipboard) {
-        return;
-      }
       try {
+         if(navigator && navigator.clipboard && navigator.clipboard.readText){
         const text = await navigator.clipboard.readText();
         this.youtubeUrl = text;
+         }
       } catch (err) {
-        console.error("Failed to copy!", err);
+        console.log("Failed to copy!", err);
       }
     },
     showThumbPreview(thumb) {
