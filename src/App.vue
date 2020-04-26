@@ -3,7 +3,7 @@
     <div v-if="getRouteName!='Admin'">
       <Navbar />
     </div>
-    <v-content class="ma-4">
+    <v-content >
       <router-view></router-view>
     </v-content>
     <div v-if="getRouteName!='Admin'">

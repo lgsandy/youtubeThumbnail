@@ -1,8 +1,9 @@
 <template>
-  <v-container style="height:100%">
-    <v-form ref="form" style="height:60px">
+
+    <v-img src="../assets/backimage.jpg">
+    <v-form ref="form" style="height:60px;margin-top:10px">
       <div style="width:100%;display: flex;place-content: center;">
-        <div style="float:left;width:50%;height:60px">
+        <div style="float:left;width:50%;height:56px;background-color:whitesmoke">
           <v-text-field
             :rules="searchVal"
             v-model="youtubeUrl"
@@ -129,7 +130,8 @@
       <span>{{snackbarText}}</span>
       <v-btn color="pink" text @click="showSnackbar = false">Close</v-btn>
     </v-snackbar>
-  </v-container>
+    </v-img>
+ 
 </template>
 
 <script>
@@ -168,10 +170,10 @@ export default {
             this.videoId = this.videoId.substr(0, 11);
           }
            this.allQualityThumb = [
-            { name: "mqdefault", base64:'', size: "MQ 320x180",url: `https://i.ytimg.com/vi/${this.videoId}/mqdefault.jpg` },
-            { name: "hqdefault",  base64:'',size: "HQ 480x360",url: `https://i.ytimg.com/vi/${this.videoId}/hqdefault.jpg` },
-            { name: "sddefault",  base64:'',size: "SD 640x480",url: `https://i.ytimg.com/vi/${this.videoId}/sddefault.jpg` },
-            { name: "maxresdefault",  base64:'',size: "HD 1920x1080",url: `https://i.ytimg.com/vi/${this.videoId}/maxresdefault.jpg` }
+            { name: "maxresdefault",  base64:'',size: "HD 1920x1080",url: `https://i.ytimg.com/vi/${this.videoId}/maxresdefault.jpg` },
+              { name: "sddefault",  base64:'',size: "SD 640x480",url: `https://i.ytimg.com/vi/${this.videoId}/sddefault.jpg` },
+              { name: "hqdefault",  base64:'',size: "HQ 480x360",url: `https://i.ytimg.com/vi/${this.videoId}/hqdefault.jpg` },
+              { name: "mqdefault", base64:'', size: "MQ 320x180",url: `https://i.ytimg.com/vi/${this.videoId}/mqdefault.jpg` },
           ];
           for (let i = 0; i < this.allQualityThumb.length; i++) {
             this.forceDownload(i);
@@ -186,10 +188,10 @@ export default {
     },
     forceDownload(i) {
       let _this = this;
+       _this.overlay = false;
       let cUrl = `https://i.ytimg.com/vi/${this.videoId}/${_this.allQualityThumb[i].name}.jpg`;
       var xhr = new XMLHttpRequest();
       xhr.onload = function() {
-       _this.overlay = false;
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             var reader = new FileReader();

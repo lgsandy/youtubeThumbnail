@@ -29,8 +29,9 @@
         </v-list>
       </v-menu>
       <v-toolbar-title class="text-uppercase">
-        <span class="font-weight-light">Youtube</span>
-        <span>ThumbNail</span>
+       <router-link to="/" tag="span">
+       <v-img src="../assets/newlogo.jpeg" width="43" contain transition="scale-transition" style="cursor:pointer"></v-img>
+          </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <router-link to="/" tag="span">
@@ -51,6 +52,19 @@
           <v-icon right>contact_mail</v-icon>
         </v-btn>
       </router-link>
+        <router-link to="/disclaimer" tag="span">
+        <v-btn text class="hidden-sm-and-down">
+          <span>Disclaimer</span>
+          <v-icon right>assignment</v-icon>
+        </v-btn>
+      </router-link>
+        <router-link to="/privacypolicy" tag="span">
+        <v-btn text class="hidden-sm-and-down">
+          <span>privacy policy</span>
+          <v-icon right>assignment</v-icon>
+        </v-btn>
+      </router-link>
+
         <v-btn v-if="isAdminLogin" text class="hidden-sm-and-down"  @click="logoutDialog = true">
           <span>Logout</span>
           <v-icon right>exit_to_app</v-icon>
@@ -85,7 +99,9 @@ export default {
     links: [
       { icon: "dashboard", text: "Home", route: "/" },
       { icon: "folder", text: "About Us", route: "/aboutus" },
-      { icon: "person", text: "Contact Us", route: "/contactus" }
+      { icon: "person", text: "Contact Us", route: "/contactus" },
+      { icon: "assignment", text: "Disclaimer", route: "/disclaimer" },
+      { icon: "assignment", text: "Privacy policy", route: "/privacypolicy" }
     ],
     mini: true,
     logoutDialog:false,
