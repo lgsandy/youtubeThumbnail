@@ -1,6 +1,6 @@
 <template>
 
-    <v-img src="../assets/backimage.jpg">
+    <v-img src="../assets/backimage.jpg" style="opacity:0.9">
     <v-form ref="form" style="height:60px;margin-top:10px">
       <div style="width:100%;display: flex;place-content: center;">
         <div style="float:left;width:50%;height:56px;background-color:whitesmoke">
