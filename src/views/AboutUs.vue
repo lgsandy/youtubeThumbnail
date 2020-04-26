@@ -1,9 +1,11 @@
 <template>
 <div>
   <v-img src="../assets/aboutus.jpg" max-height="200"></v-img>
+   <div id="addAboutDataDiv">
+   </div>
    <div class="my-2" style="text-align:center" v-if="isAdminLogin">
       <v-btn  color="primary" @click="updateAboutUs">Update</v-btn>
-  </div>
+   </div>
     <v-dialog
       v-model="aboutUsDialog"
       width="60%"
@@ -34,6 +36,14 @@
     </v-dialog>
 </div>
 </template>
+<style scoped>
+#addAboutDataDiv{
+   margin: 20px 30px 10px 30px;
+    text-align: justify;
+    border: 1px solid #e4e4e4;
+    padding: 20px;
+}
+</style>
 
 <script>
 // @ is an alias to /src
@@ -64,7 +74,11 @@ export default {
         let ref = db.collection("youtubethumb").doc("aboutUs");
         ref.onSnapshot(res => {
           if (res && res.data()) {
-            console.log("aboutUs",res.data());
+            this.content=res.data().aboutUs;
+           let ele= document.getElementById('addAboutDataDiv');
+           if(ele){
+             ele.innerHTML= this.content
+           }
           }
         });
       }
@@ -80,11 +94,6 @@ export default {
            console.log("update");
          }
         })
-        // ref.onSnapshot(res => {
-        //   if (res && res.data()) {
-        //     console.log("aboutUs",res.data());
-        //   }
-        // });
       }
     }
   }

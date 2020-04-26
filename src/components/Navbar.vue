@@ -20,6 +20,12 @@
           >
             <v-list-item-title>{{link.text}}</v-list-item-title>
           </v-list-item>
+           <v-list-item
+            active-class="border"
+            link
+          >
+            <v-list-item-title @click="logoutDialog = true">Logout</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
       <v-toolbar-title class="text-uppercase">
@@ -45,7 +51,31 @@
           <v-icon right>contact_mail</v-icon>
         </v-btn>
       </router-link>
+        <v-btn v-if="isAdminLogin" text class="hidden-sm-and-down"  @click="logoutDialog = true">
+          <span>Logout</span>
+          <v-icon right>exit_to_app</v-icon>
+        </v-btn>
     </v-app-bar>
+     <v-dialog v-model="logoutDialog" width="300" >
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          Do you want To Logout
+        </v-card-title>
+        <v-card-text>
+       <v-card-actions style="place-content:center;margin-top:10px">
+           <v-btn color="primary"  @click="logoutAdmin" style="margin-right:15px">
+            Logout
+          </v-btn>
+          <v-btn color="error"  @click="logoutDialog = false" style="margin-left:15px">
+            Cancel
+          </v-btn>
+        </v-card-actions>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </nav>
 </template>
 <script>
@@ -57,10 +87,25 @@ export default {
       { icon: "folder", text: "About Us", route: "/aboutus" },
       { icon: "person", text: "Contact Us", route: "/contactus" }
     ],
-    mini: true
+    mini: true,
+    logoutDialog:false,
+    isAdminLogin:false
   }),
   components: {
     // Popup
+  },
+  created(){
+   if(localStorage && localStorage.adminData && localStorage.adminData.length>0){
+     this.isAdminLogin=true;
+   }else{
+     this.isAdminLogin=false;
+   }
+  },
+  methods:{
+    logoutAdmin(){
+    localStorage.removeItem('adminData')
+      this.$router.push('/adminlogin')
+    }
   }
 };
 </script>
