@@ -30,7 +30,7 @@
       </v-menu>
       <v-toolbar-title class="text-uppercase">
        <router-link to="/" tag="span">
-       <v-img src="../assets/newlogo.jpeg" width="43" contain transition="scale-transition" style="cursor:pointer"></v-img>
+       <v-img src="../assets/newlogo.png" width="43" contain transition="scale-transition" style="cursor:pointer"></v-img>
           </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>

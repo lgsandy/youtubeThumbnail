@@ -1,6 +1,8 @@
 <template>
-
-    <v-img src="../assets/backimage.jpg" style="opacity:0.9">
+ <v-container fluid class="ma-0">
+    <div style="width:100%;display: flex;place-content: center;">
+          <h1>Best Youtube Thumbnail Downloader</h1>
+    </div>
     <v-form ref="form" style="height:60px;margin-top:10px">
       <div style="width:100%;display: flex;place-content: center;">
         <div style="float:left;width:50%;height:56px;background-color:whitesmoke">
@@ -19,13 +21,17 @@
         </div>
       </div>
     </v-form>
+      <div style="width:100%;display: flex;place-content: center;">
+          <h4>Get Any Thumbnails Just in One Single Click</h4>
+     </div>
     <v-row align="center" justify="center">
       <v-col cols="12" xs="12" sm="12" align="center" justify="center">
-        <v-img
+        <!-- <v-img
           height="60"
           width="468"
           src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg"
-        ></v-img>
+        ></v-img> -->
+          <span>Ads Here</span>   
       </v-col>
     </v-row>
 
@@ -73,27 +79,30 @@
               </v-card-actions>
               <v-card class="hidden-md-and-up">
                 <!-- <v-card-text>Ads</v-card-text> -->
-                 <v-img
+                 <!-- <v-img
           height="60"
           width="468"
           src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg"
-        ></v-img>
+        ></v-img> -->
+           <span>Ads Here</span>   
               </v-card>
             </v-card>
           </v-col>
         </v-row>
       </v-col>
       <v-col cols="12" xs="12" sm="2" class="hidden-sm-and-down">
-        <v-img src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg" height="100%"></v-img>
+        <!-- <v-img src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg" height="100%"></v-img> -->
+           <span>Ads Here</span>   
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" xs="12" sm="12" align="center" justify="center">
-        <v-img
+        <!-- <v-img
           height="60"
           width="468"
           src="https://cdn.pixabay.com/photo/2015/02/24/15/41/dog-647528__340.jpg"
-        ></v-img>
+        ></v-img> -->
+           <span>Ads Here</span>   
       </v-col>
     </v-row>
     <!-- <div
@@ -104,6 +113,11 @@
     >
       <span>Not Valid Url</span>
     </div>-->
+     <div id="addPostDataDiv">
+      </div>
+       <div class="my-2" style="text-align:center" v-if="isAdminLogin">
+      <v-btn  color="primary" @click="PostDialog=true">Update</v-btn>
+      </div>
     <v-overlay :value="overlay">
       <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
     </v-overlay>
@@ -130,16 +144,46 @@
       <span>{{snackbarText}}</span>
       <v-btn color="pink" text @click="showSnackbar = false">Close</v-btn>
     </v-snackbar>
-    </v-img>
- 
+     <v-dialog v-model="PostDialog" width="60%">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>
+          Update Post
+        </v-card-title>
+        <v-card-text>
+           <div id="app">
+        <vue-editor v-model="content"></vue-editor>
+        </div>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="updatePostData">
+            Update
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+ </v-container>
 </template>
+
+<style scoped>
+#addPostDataDiv{
+   margin: 20px 30px 10px 30px;
+    text-align: justify;
+    border: 1px solid #e4e4e4;
+    padding: 20px;
+    box-shadow: 0px 2px 1px 2px #d7d7d7;
+}
+</style>
 
 <script>
 //  import axios from "axios";
 import leftsideAds from "../components/leftsideads";
+import { VueEditor } from "vue2-editor";
+import { db } from "../fireBase/firebaseauth";
 export default {
   name: "Dashboard",
-  components: { leftsideAds },
+  components: { leftsideAds,VueEditor },
   data: () => ({
     searchVal: [v => !!v || "please paste youtube url"],
     allQualityThumb: [],
@@ -151,9 +195,45 @@ export default {
     isShowThumbPreview: false,
     currentSelectedThumb: "",
     showSnackbar: false,
-    snackbarText: ""
+    snackbarText: "",
+    content:'',
+    isAdminLogin:false,
+    PostDialog:false
   }),
+  created(){
+    if(localStorage && localStorage.adminData && localStorage.adminData.length>0){
+    this.isAdminLogin=true;
+    }else{
+      this.isAdminLogin=false;
+    }
+  this.loadPostUsData();
+  },
   methods: {
+    loadPostUsData() {
+        let ref = db.collection("youtubethumb").doc("post");
+        ref.onSnapshot(res => {
+          if (res && res.data()) {
+            this.content=res.data().post;
+           let ele= document.getElementById('addPostDataDiv');
+           if(ele && this.content){
+             ele.innerHTML= this.content
+           }
+          }
+        });
+    },
+    updatePostData(){
+     this.PostDialog = false;
+     if (localStorage && localStorage.adminData && localStorage.adminData.length) {
+        let ref = db.collection("youtubethumb").doc("post");
+        let cDate=new Date().getTime();
+         let obj={timeStamp:cDate,post:this.content}
+        ref.set(obj).then(res=>{
+         if(res){
+           console.log("update");
+         }
+        })
+      }
+    },
     search() {
       if (this.$refs.form.validate()) {
         let isValid = this.validateYouTubeUrl(this.youtubeUrl);

@@ -6,26 +6,17 @@
    <div class="my-2" style="text-align:center" v-if="isAdminLogin">
       <v-btn  color="primary" @click="updateAboutUs">Update</v-btn>
    </div>
-    <v-dialog
-      v-model="aboutUsDialog"
-      width="60%"
-    >
+    <v-dialog v-model="aboutUsDialog" width="60%">
       <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
+        <v-card-title class="headline grey lighten-2" primary-title>
           Update AboutUs
         </v-card-title>
-
         <v-card-text>
            <div id="app">
         <vue-editor v-model="content"></vue-editor>
         </div>
         </v-card-text>
-
         <v-divider></v-divider>
-
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="updateAboutUsData">
