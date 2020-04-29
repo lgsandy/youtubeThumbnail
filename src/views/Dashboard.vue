@@ -3,7 +3,7 @@
     <div style="width:100%;display: flex;place-content: center;">
           <h1>Best Youtube Thumbnail Downloader</h1>
     </div>
-    <v-form ref="form" style="height:60px;margin-top:10px">
+    <v-form ref="form" style="height:60px;margin-top:10px" v-on:submit.prevent="loadAllthumb">
       <div style="width:100%;display: flex;place-content: center;">
         <div style="float:left;width:50%;height:56px;background-color:whitesmoke">
           <v-text-field
@@ -13,8 +13,6 @@
             prepend-inner-icon="search"
             label="SEARCH YOUTUBE VIDEO URL"
             @focus="allowAutoEnter"
-            @mouseover="allowAutoEnter"
-            @keydown="loadAllthumb"
           ></v-text-field>
         </div>
         <div>
@@ -97,7 +95,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" xs="12" sm="12" align="center" justify="center">
+      <v-col cols="12" xs="12" sm="12" align="center" class="hidden-sm-and-down"  justify="center">
         <!-- <v-img
           height="60"
           width="468"
@@ -236,7 +234,9 @@ export default {
       }
     },
     loadAllthumb(evt){
-     console.log(evt.keyCode);
+    if(evt){
+      this.search();
+    }
     },
     search() {
       if (this.$refs.form.validate()) {
