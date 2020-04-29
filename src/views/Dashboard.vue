@@ -120,9 +120,13 @@
       <span>Not Valid Url</span>
     </div>-->
      
-
-     <div id="addPostDataDiv">
+ <v-layout row wrap>
+      <v-flex xs10 offset-xs1>
+       <div id="addPostDataDiv">
       </div>
+      </v-flex>
+ </v-layout>
+     
        <div class="my-2" style="text-align:center" v-if="isAdminLogin">
       <v-btn  color="primary" @click="updateTextPost('post')">Update</v-btn>
       </div>
@@ -130,10 +134,12 @@
     <v-overlay :value="overlay">
       <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
     </v-overlay>
-    <v-dialog v-model="isShowThumbPreview" width="500">
-      <div style="height:400px;width:100%">
+    <v-dialog v-model="isShowThumbPreview"  width="unset">
+      <div style="width:100%">
         <div style="height:50px">
           <v-toolbar flat dark color="primary">
+              <v-spacer />
+            <v-toolbar-title>Image Preview</v-toolbar-title>
             <v-spacer />
             <v-btn icon dark @click="isShowThumbPreview = false">
               <v-icon>mdi-close</v-icon>
@@ -233,6 +239,12 @@ export default {
            if(ele && this.postContent){
              ele.innerHTML= this.postContent
            }
+           let allImg=ele.getElementsByTagName('img');
+           for(let i=0;i<allImg.length;i++){
+               if(allImg[i] && allImg[i].style){
+                  allImg[i].style.maxWidth="100%"
+               }
+           }
           }
         });
 
@@ -243,6 +255,12 @@ export default {
            let ele= document.getElementById('addTextDataDiv');
            if(ele && this.textContent){
              ele.innerHTML= this.textContent
+           }
+            let allImg1=ele.getElementsByTagName('img');
+           for(let i=0;i<allImg1.length;i++){
+               if(allImg1[i] && allImg1[i].style){
+                  allImg1[i].style.maxWidth="100%"
+               }
            }
           }
         });
