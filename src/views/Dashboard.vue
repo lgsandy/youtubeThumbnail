@@ -14,6 +14,7 @@
             label="SEARCH YOUTUBE VIDEO URL"
             @focus="allowAutoEnter"
             @mouseover="allowAutoEnter"
+            @keydown="loadAllthumb"
           ></v-text-field>
         </div>
         <div>
@@ -233,6 +234,9 @@ export default {
          }
         })
       }
+    },
+    loadAllthumb(evt){
+     console.log(evt.keyCode);
     },
     search() {
       if (this.$refs.form.validate()) {
