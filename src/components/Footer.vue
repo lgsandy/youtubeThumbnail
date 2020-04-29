@@ -17,9 +17,9 @@
       <v-card-text class="py-2 white--text text-center">Copyright &copy;
         {{ new Date().getFullYear() }}  <strong>youtubethumbnailsave.com</strong>
       </v-card-text>
-       <social-sharing url="https://vuejs.org/"
+       <social-sharing url="youtubethumbnailsave.com"
                       title="The Progressive JavaScript Framework"
-                      description="Intuitive, Fast and Composable MVVM for building interactive interfaces."
+                      description="YouTube Thumbnail Save  Download YouTube Thumbnail"
                       quote="Vue is a progressive framework for building user interfaces."
                       hashtags="vuejs,javascript,framework"
                       twitter-user="vuejs"

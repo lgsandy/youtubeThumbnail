@@ -4,131 +4,58 @@
       <v-row align="end" class="lightbox white--text pa-2 fill-height">
         <v-col align="center" class="justify-center">
           <div class="display-1">Contact Us</div>
-          <div class="body-1">{{contactDetails.email}}</div>
         </v-col>
       </v-row>
     </v-img>
-    <v-row align="center" justify="center" class="ma-4">
-      <v-card color="#26c6da" dark width="400">
-        <v-card-title>
-          <v-icon large left>note</v-icon>
-          <span class="title font-weight-light">Details</span>
-          <v-spacer />
-
-          <v-btn
-            v-if="isAdminLogin"
-            color="primary"
-            fab
-            small
-            dark
-            @click="editContactDialog = true"
-          >
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
+ 
+      <div id="addContactUsDataDiv">
+        <span>12</span>
+      </div>
+ <div class="my-2" style="text-align:center" v-if="isAdminLogin">
+      <v-btn  color="primary" @click="conatctUsDialog=true">Update</v-btn>
+   </div>
+       <v-dialog v-model="conatctUsDialog" width="60%">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>
+          Update AboutUs
         </v-card-title>
-
-        <v-list disabled rounded color="#26c6da" dark max-width="400">
-          <v-list-item-group>
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>person</v-icon>
-              </v-list-item-icon>
-              <v-spacer />
-              <v-list-item-content>
-                <v-list-item-title>{{contactDetails.name}}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-          <v-list-item-group>
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>phone</v-icon>
-              </v-list-item-icon>
-              <v-spacer />
-              <v-list-item-content>
-                <v-list-item-title>{{contactDetails.phoneNo}}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-          <v-list-item-group>
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>library_books</v-icon>
-              </v-list-item-icon>
-              <v-spacer />
-              <v-list-item-content>{{contactDetails.address}}</v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
+        <v-card-text>
+           <div id="app">
+        <vue-editor v-model="content"></vue-editor>
+        </div>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="updateContactUSData">
+            Update
+          </v-btn>
+        </v-card-actions>
       </v-card>
-    </v-row>
-    <div class="text-center">
-      <v-dialog v-model="editContactDialog" width="500" persistent>
-        <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>Update Contact details</v-card-title>
+    </v-dialog>
 
-          <v-card-text>
-            <v-form ref="updateContact">
-              <v-row dense>
-                <v-col cols="12" md="12">
-                  <v-text-field
-                    v-model="contactDetails.name"
-                    :rules="nameRules"
-                    label="Name"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="12">
-                  <v-text-field
-                    v-model="contactDetails.email"
-                    :rules="emailRules"
-                    label="E-mail"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="12">
-                  <v-text-field
-                    v-model="contactDetails.phoneNo"
-                    :rules="phoneNoRules"
-                    label="Mobile No"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="12">
-                  <v-textarea
-                    rows="3"
-                    v-model="contactDetails.address"
-                    label="Address"
-                    hint="Enter Address"
-                  ></v-textarea>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card-text>
-
-          <v-divider></v-divider>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="error" text @click="updateContactDetails">Update</v-btn>
-            <v-btn color="primary" text @click="editContactDialog = false">Cancel</v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </div>
+    
   </v-container>
 </template>
-
+<style scoped>
+#addContactUsDataDiv{
+   margin: 20px 30px 10px 30px;
+    text-align: justify;
+    border: 1px solid #e4e4e4;
+    padding: 20px;
+}
+</style>
 <script>
 // @ is an alias to /src
 import { db } from "../fireBase/firebaseauth";
+import { VueEditor } from "vue2-editor";
 export default {
   name: "projects",
-  components: {},
+  components: {VueEditor},
   data: () => ({
     editContactDialog: false,
-
+    conatctUsDialog:false,
+    content: "",
     contactDetails: {
       name: "",
       email: "",
@@ -185,25 +112,28 @@ export default {
     sortBy(prop) {
       this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
     },
-    updateContactDetails() {
-      if (this.$refs.updateContact.validate()) {
-        console.log(this.contactDetails);
+    updateContactUSData() {
+         this.conatctUsDialog=false;
         if (localStorage && localStorage.adminData && localStorage.adminData.length) {
         let ref = db.collection("youtubethumb").doc("contactUs");
-        ref.set(this.contactDetails).then(res=>{
-            this.editContactDialog=false;
+         let cDate=new Date().getTime();
+         let obj={timeStamp:cDate,contactUs:this.content}
+        ref.set(obj).then(res=>{
          if(res){
            console.log("update");
          }
         })
-      }
       }
     },
 loadContactUs(){
         let ref = db.collection("youtubethumb").doc("contactUs");
         ref.onSnapshot(res => {
           if (res && res.data()) {
-            this.contactDetails=res.data();
+            this.content=res.data().contactUs;
+           let ele= document.getElementById('addContactUsDataDiv');
+           if(ele){
+             ele.innerHTML= this.content
+           }
           }
         });
 },

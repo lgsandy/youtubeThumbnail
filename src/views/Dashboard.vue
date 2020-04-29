@@ -43,6 +43,13 @@
       </v-col>
       <v-col cols="12" xs="12" sm="8">
         <v-row>
+          <v-col v-if="allQualityThumb && allQualityThumb.length == 0" style="background-color:#fdfdfd">
+         <div id="addTextDataDiv">
+       </div>
+       <div class="my-2" style="text-align:center" v-if="isAdminLogin">
+       <v-btn  color="primary" @click="updateTextPost('text')">Update</v-btn>
+      </div>
+          </v-col>
           <v-col
             cols="12"
             xs="12"
@@ -112,11 +119,14 @@
     >
       <span>Not Valid Url</span>
     </div>-->
+     
+
      <div id="addPostDataDiv">
       </div>
        <div class="my-2" style="text-align:center" v-if="isAdminLogin">
-      <v-btn  color="primary" @click="PostDialog=true">Update</v-btn>
+      <v-btn  color="primary" @click="updateTextPost('post')">Update</v-btn>
       </div>
+
     <v-overlay :value="overlay">
       <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
     </v-overlay>
@@ -143,6 +153,7 @@
       <span>{{snackbarText}}</span>
       <v-btn color="pink" text @click="showSnackbar = false">Close</v-btn>
     </v-snackbar>
+    
      <v-dialog v-model="PostDialog" width="60%">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>
@@ -162,6 +173,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
  </v-container>
 </template>
 
@@ -172,6 +184,7 @@
     border: 1px solid #e4e4e4;
     padding: 20px;
     box-shadow: 0px 2px 1px 2px #d7d7d7;
+    background-color: white;
 }
 </style>
 
@@ -196,8 +209,11 @@ export default {
     showSnackbar: false,
     snackbarText: "",
     content:'',
+    postContent:'',
+    textContent:'',
     isAdminLogin:false,
-    PostDialog:false
+    PostDialog:false,
+    dialogStatus:''
   }),
   created(){
     if(localStorage && localStorage.adminData && localStorage.adminData.length>0){
@@ -212,17 +228,31 @@ export default {
         let ref = db.collection("youtubethumb").doc("post");
         ref.onSnapshot(res => {
           if (res && res.data()) {
-            this.content=res.data().post;
+            this.postContent=res.data().post;
            let ele= document.getElementById('addPostDataDiv');
-           if(ele && this.content){
-             ele.innerHTML= this.content
+           if(ele && this.postContent){
+             ele.innerHTML= this.postContent
            }
           }
         });
+
+   let ref1 = db.collection("youtubethumb").doc("text");
+        ref1.onSnapshot(res => {
+          if (res && res.data()) {
+            this.textContent=res.data().text;
+           let ele= document.getElementById('addTextDataDiv');
+           if(ele && this.textContent){
+             ele.innerHTML= this.textContent
+           }
+          }
+        });
+
+        
     },
     updatePostData(){
      this.PostDialog = false;
      if (localStorage && localStorage.adminData && localStorage.adminData.length) {
+       if(this.dialogStatus == 'post'){
         let ref = db.collection("youtubethumb").doc("post");
         let cDate=new Date().getTime();
          let obj={timeStamp:cDate,post:this.content}
@@ -231,7 +261,30 @@ export default {
            console.log("update");
          }
         })
+       }
+       if(this.dialogStatus == 'text'){
+        let ref = db.collection("youtubethumb").doc("text");
+        let cDate=new Date().getTime();
+         let obj={timeStamp:cDate,text:this.content}
+        ref.set(obj).then(res=>{
+         if(res){
+           console.log("update");
+         }
+        })
+       }
+
       }
+    },
+    updateTextPost (text) {
+     this.PostDialog=true;
+     if(text == 'post'){
+      this.content=this.postContent;
+     }
+     if(text == 'text'){
+       this.content=this.textContent;
+     }
+     this.dialogStatus=text;
+     console.log(text)
     },
     loadAllthumb(evt){
     if(evt){
